@@ -1,52 +1,54 @@
 name: Minecraft Server
 
 on:
-  workflow_dispatch:
+workflow_dispatch:
 
 jobs:
-  run-server:
-    runs-on: ubuntu-latest
+run-server:
+runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v3
+```
+steps:
+  - uses: actions/checkout@v4
 
-      - name: Restore world
-        uses: actions/download-artifact@v4
-        with:
-          name: minecraft-world
-          path: .
-        continue-on-error: true
+  - name: Restore world
+    uses: actions/download-artifact@v4
+    with:
+      name: minecraft-world
+      path: .
+    continue-on-error: true
 
-      - name: Install Java
-        run: sudo apt update && sudo apt install openjdk-17-jre -y
+  - name: Install Java
+    run: sudo apt update && sudo apt install openjdk-17-jre -y
 
-      - name: Install Playit
-        run: |
-          wget https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64
-          chmod +x playit-linux-amd64
-          ./playit-linux-amd64 &
+  - name: Start Playit Tunnel
+    run: |
+      wget https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64
+      chmod +x playit-linux-amd64
+      ./playit-linux-amd64 --secret afe6260d8c &
 
-      - name: Start Minecraft Server
-        run: |
-          bash server.sh &
-          sleep 21000
+  - name: Start Minecraft Server
+    run: |
+      bash server.sh &
+      sleep 21000
 
-      - name: Save world
-        uses: actions/upload-artifact@v4
-        with:
-          name: minecraft-world
-          path: |
-            world
-            world_nether
-            world_the_end
+  - name: Save world
+    uses: actions/upload-artifact@v4
+    with:
+      name: minecraft-world
+      path: |
+        world
+        world_nether
+        world_the_end
+```
 
-  restart:
-    needs: run-server
-    runs-on: ubuntu-latest
-    steps:
-      - name: Restart workflow
-        run: |
-          curl -X POST \
-          -H "Accept: application/vnd.github+json" \
-          https://api.github.com/repos/${{ github.repository }}/actions/workflows/server.yml/dispatches \
-          -d '{"ref":"main"}'
+restart:
+needs: run-server
+runs-on: ubuntu-latest
+steps:
+- name: Restart workflow
+run: |
+curl -X POST 
+-H "Accept: application/vnd.github+json" 
+https://api.github.com/repos/${{ github.repository }}/actions/workflows/server.yml/dispatches 
+-d '{"ref":"main"}'
