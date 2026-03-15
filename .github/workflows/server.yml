@@ -13,5 +13,11 @@ jobs:
       - name: Install Java
         run: sudo apt update && sudo apt install openjdk-17-jre -y
 
-      - name: Run server
+      - name: Install Playit
+        run: |
+          wget https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64
+          chmod +x playit-linux-amd64
+          ./playit-linux-amd64 &
+
+      - name: Start Minecraft Server
         run: bash server.sh
