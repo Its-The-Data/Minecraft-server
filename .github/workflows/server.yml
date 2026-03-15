@@ -19,17 +19,17 @@ jobs:
 
       - name: Install Java
         run: sudo apt update && sudo apt install openjdk-17-jre -y
-
+        
+      - name: Start Minecraft Server
+        run: |
+          bash server.sh &
+          sleep 21000
+          
       - name: Start Playit Tunnel
         run: |
           wget https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64
           chmod +x playit-linux-amd64
           ./playit-linux-amd64 --claim afe6260d8c &
-
-      - name: Start Minecraft Server
-        run: |
-          bash server.sh &
-          sleep 21000
 
       - name: Save world
         uses: actions/upload-artifact@v4
