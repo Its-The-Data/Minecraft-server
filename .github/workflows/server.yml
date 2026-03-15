@@ -27,8 +27,9 @@ jobs:
           
       - name: Start Playit Tunnel
         run: |
-          curl -fsSL https://playit.gg/install.sh | bash
-          playit &
+          curl -L https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64 -o playit
+          chmod +x playit
+          ./playit &
           sleep 21000
 
       - name: Save world
