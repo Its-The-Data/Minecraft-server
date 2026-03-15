@@ -27,10 +27,9 @@ jobs:
           
       - name: Start Playit Tunnel
         run: |
-          curl -L https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64 -o playit
-          chmod +x playit
-          ./playit &
-          sleep 21000
+          wget https://github.com/playit-cloud/playit-agent/releases/download/v0.15.0/playit-linux-amd64
+          chmod +x playit-linux-amd64
+          ./playit-linux-amd64
 
       - name: Save world
         uses: actions/upload-artifact@v4
