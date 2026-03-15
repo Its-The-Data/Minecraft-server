@@ -7,7 +7,7 @@ jobs:
 run-server:
 runs-on: ubuntu-latest
 
-```
+
 steps:
   - uses: actions/checkout@v4
 
@@ -28,4 +28,4 @@ steps:
       ./playit-linux-amd64 --claim afe6260d8c &
 
   - name: Start
-```
+
