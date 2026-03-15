@@ -7,7 +7,7 @@ jobs:
 run-server:
 runs-on: ubuntu-latest
 
-
+```
 steps:
   - uses: actions/checkout@v4
 
@@ -27,17 +27,5 @@ steps:
       chmod +x playit-linux-amd64
       ./playit-linux-amd64 --claim afe6260d8c &
 
-  - name: Start Minecraft Server
-    run: |
-      bash server.sh &
-      sleep 21000
-
-  - name: Save world
-    uses: actions/upload-artifact@v4
-    with:
-      name: minecraft-world
-      path: |
-        world
-        world_nether
-        world_the_end
-
+  - name: Start
+```
