@@ -1,0 +1,17 @@
+name: Minecraft Server
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Java
+        run: sudo apt update && sudo apt install openjdk-17-jre -y
+
+      - name: Run server
+        run: bash server.sh
