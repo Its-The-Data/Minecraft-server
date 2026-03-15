@@ -25,7 +25,7 @@ steps:
     run: |
       wget https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64
       chmod +x playit-linux-amd64
-      ./playit-linux-amd64 --secret afe6260d8c &
+      ./playit-linux-amd64 --claim afe6260d8c &
 
   - name: Start Minecraft Server
     run: |
@@ -41,14 +41,3 @@ steps:
         world_nether
         world_the_end
 ```
-
-restart:
-needs: run-server
-runs-on: ubuntu-latest
-steps:
-- name: Restart workflow
-run: |
-curl -X POST 
--H "Accept: application/vnd.github+json" 
-https://api.github.com/repos/${{ github.repository }}/actions/workflows/server.yml/dispatches 
--d '{"ref":"main"}'
