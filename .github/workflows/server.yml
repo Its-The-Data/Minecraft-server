@@ -1,36 +1,18 @@
-name: Minecraft Server
+#!/bin/bash
 
-on:
-  workflow_dispatch:
+echo "Downloading Minecraft server..."
+wget https://api.papermc.io/v2/projects/paper/versions/1.20.4/builds/416/downloads/paper-1.20.4-416.jar -O server.jar
 
-jobs:
-  run-server:
-    runs-on: ubuntu-latest
+echo "Accepting EULA..."
+echo "eula=true" > eula.txt
 
-    steps:
-      - uses: actions/checkout@v3
+echo "Starting server loop..."
 
-      - name: Install Java
-        run: sudo apt update && sudo apt install openjdk-17-jre -y
+while true
+do
+  echo "Launching Minecraft server..."
+  java -Xms2G -Xmx4G -jar server.jar nogui
 
-      - name: Install Playit
-        run: |
-          wget https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64
-          chmod +x playit-linux-amd64
-          ./playit-linux-amd64 &
-
-      - name: Start Minecraft Server
-        run: |
-          bash server.sh &
-          sleep 21000
-
-  restart:
-    needs: run-server
-    runs-on: ubuntu-latest
-    steps:
-      - name: Restart workflow
-        run: |
-          curl -X POST \
-          -H "Accept: application/vnd.github+json" \
-          https://api.github.com/repos/${{ github.repository }}/actions/workflows/server.yml/dispatches \
-          -d '{"ref":"main"}'
+  echo "Server stopped or crashed. Restarting in 10 seconds..."
+  sleep 10
+done
